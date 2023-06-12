@@ -3,11 +3,11 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>dk.berrywebsite</groupId>
-    <artifactId>proveEksamen</artifactId>
+    <artifactId>Eksamen</artifactId>
     <version>1.0.1</version>
     <packaging>war</packaging>
 
-    <name>prove</name>
+    <name>exam</name>
 
     <properties>
         <endorsed.dir>${project.build.directory}/endorsed</endorsed.dir>
@@ -20,7 +20,7 @@
 
         <!-- TODO: Add your own database name -->
         <!-- IMPORTANT-1: The database should exist on your droplet -->
-        <db.name>proveEksamen</db.name>
+        <db.name>eksamen</db.name>
     </properties>
 
     <dependencies>
