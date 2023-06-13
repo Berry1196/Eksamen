@@ -3,6 +3,8 @@ package entities;
 import lombok.*;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Getter
 @Setter
@@ -14,6 +16,9 @@ public class Dinnerevent {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @Column(name = "event_name")
+    private String eventName;
 
     @Column(name = "time")
     private String time;
@@ -27,9 +32,8 @@ public class Dinnerevent {
     @Column(name = "price_per_person")
     private double pricePerPerson;
 
-    @ManyToOne
-    @JoinColumn(name = "assignment_id")
-    private Assignment assignment;
+    @OneToMany(mappedBy = "dinnerevent")
+    private List<Assignment> assignments = new ArrayList<>();
 
 
 }

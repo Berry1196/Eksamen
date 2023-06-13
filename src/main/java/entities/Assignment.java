@@ -28,8 +28,11 @@ public class Assignment {
     @Column(name = "contact_info")
     private String contactInfo;
 
-    @OneToMany(mappedBy = "assignment")
-    private List<Dinnerevent> dinnerEvents = new ArrayList<>();
+    @ManyToOne
+    @JoinColumn(name = "dinnerevent_id")
+    private Dinnerevent dinnerevent;
+
+
 
     @ManyToMany(mappedBy = "assignment")
     private Set<User> users = new HashSet<>();
