@@ -31,16 +31,17 @@ public class User implements Serializable {
     @Size(min = 1, max = 255)
     @Column(name = "user_pass")
     private String userPass;
+
     @Column(name = "address")
     private String address;
     @Column(name = "phone")
     private String phone;
     @Column(name = "email", length = 100)
     private String email;
-    @Column(name = "birth_year")
+    @Column(name = "birthYear")
     private String birthYear;
     @Column (name = "account")
-    private String account;
+    private int account;
 
     @JoinTable(name = "user_roles", joinColumns = {
             @JoinColumn(name = "user_name", referencedColumnName = "user_name")}, inverseJoinColumns = {
@@ -49,13 +50,14 @@ public class User implements Serializable {
     @ManyToMany
     private List<Role> roleList = new ArrayList<>();
 
-   @JoinTable(name = "user_assignments", joinColumns = {
+
+    @JoinTable(name = "user_assignment", joinColumns = {
             @JoinColumn(name = "user_name", referencedColumnName = "user_name")}, inverseJoinColumns = {
             @JoinColumn(name = "assignment_id", referencedColumnName = "id")})
     @ManyToMany
-    private List<Assignment> assignment = new ArrayList<>();
+    private List<Assignment> assignmentList = new ArrayList<>();
 
-    public User( String user_name, String user_pass, String address, String phone, String email, String birthYear, String account) {
+    public User( String user_name, String user_pass, String address, String phone, String email, String birthYear, int account) {
 
         this.user_name = user_name;
         this.userPass = BCrypt.hashpw(user_pass, BCrypt.gensalt());

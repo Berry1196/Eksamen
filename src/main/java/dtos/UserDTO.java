@@ -21,7 +21,7 @@ public class UserDTO {
     private String phone;
     private String email;
     private String birthYear;
-    private String account;
+    private int account;
     private List<String> roles = new ArrayList<>();
 
     // Constructors, getters, and setters

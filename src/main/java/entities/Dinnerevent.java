@@ -30,10 +30,17 @@ public class Dinnerevent {
     private String dish;
 
     @Column(name = "price_per_person")
-    private double pricePerPerson;
+    private int pricePerPerson;
 
     @OneToMany(mappedBy = "dinnerevent")
     private List<Assignment> assignments = new ArrayList<>();
 
 
+    public Dinnerevent(String time, String eventName, String location, String dish, int pricePerPerson) {
+        this.time = time;
+        this.eventName = eventName;
+        this.location = location;
+        this.dish = dish;
+        this.pricePerPerson = pricePerPerson;
+    }
 }

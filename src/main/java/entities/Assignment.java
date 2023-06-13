@@ -34,7 +34,7 @@ public class Assignment {
 
 
 
-    @ManyToMany(mappedBy = "assignment")
+    @ManyToMany(mappedBy = "assignmentList")
     private Set<User> users = new HashSet<>();
 
 

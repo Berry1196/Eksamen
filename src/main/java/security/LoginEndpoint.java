@@ -96,7 +96,8 @@ public class LoginEndpoint {
             return Response.status(201).entity(new Gson().toJson(responseJson)).build();
         } catch (Exception ex) {
             // throws an exception if the user already exists
-            throw new API_Exception("User already exists. Try another username.", 400);
+//            throw new API_Exception("User already exists. Try another username.", 400);
+            throw new API_Exception(ex.getMessage());
         }
     }
 

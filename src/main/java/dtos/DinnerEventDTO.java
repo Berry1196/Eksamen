@@ -17,10 +17,11 @@ import java.util.stream.Collectors;
 @ToString
 public class DinnerEventDTO {
     private Long id;
+    private String eventName;
     private String time;
     private String location;
     private String dish;
-    private double pricePerPerson;
+    private int pricePerPerson;
     private List<String> assignments;
 
     public DinnerEventDTO(Dinnerevent dinnerevent) {
@@ -36,8 +37,9 @@ public class DinnerEventDTO {
         }
     }
 
-    public DinnerEventDTO(String time, String location, String dish, double pricePerPerson) {
+    public DinnerEventDTO(String time, String eventName, String location, String dish, int pricePerPerson) {
         this.time = time;
+        this.eventName = eventName;
         this.location = location;
         this.dish = dish;
         this.pricePerPerson = pricePerPerson;
