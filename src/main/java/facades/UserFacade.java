@@ -1,6 +1,7 @@
 package facades;
 
 import dtos.UserDTO;
+import entities.Assignment;
 import entities.Role;
 import entities.User;
 import javax.persistence.EntityManager;
@@ -57,6 +58,26 @@ public class UserFacade {
             em.close();
         }
         return new UserDTO(user);
+    }
+
+    public void addAssignmentToUser(Long userId, Long assignmentId) {
+        EntityManager em = emf.createEntityManager();
+        try {
+            em.getTransaction().begin();
+
+            User user = em.find(User.class, userId);
+            Assignment assignment = em.find(Assignment.class, assignmentId);
+
+            if (user != null && assignment != null) {
+                user.getAssignmentList().add(assignment);
+                assignment.getUsers().add(user);
+            }
+            em.getTransaction().commit();
+        } catch (Exception e) {
+            throw new IllegalStateException("Failed to add assignment to user", e);
+        } finally {
+            em.close();
+        }
     }
 
 

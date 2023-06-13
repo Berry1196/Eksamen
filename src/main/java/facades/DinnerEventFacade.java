@@ -69,16 +69,17 @@ public class DinnerEventFacade {
     }
 
     //Delete DinnerEvent
-    public void deleteDinnerEvent(Long id) {
+    public DinnerEventDTO deleteDinnerEvent(Long id) {
         EntityManager em = getEntityManager();
+        Dinnerevent dinnerEvent = em.find(Dinnerevent.class, id);
         try {
             em.getTransaction().begin();
-            Dinnerevent dinnerEvent = em.find(Dinnerevent.class, id);
             em.remove(dinnerEvent);
             em.getTransaction().commit();
         } finally {
             em.close();
         }
+        return new DinnerEventDTO(dinnerEvent);
     }
 
     //Update DinnerEvent
@@ -88,6 +89,7 @@ public class DinnerEventFacade {
         try {
             em.getTransaction().begin();
             dinnerEvent.setTime(dinnerEventDTO.getTime());
+            dinnerEvent.setEventName(dinnerEventDTO.getEventName());
             dinnerEvent.setLocation(dinnerEventDTO.getLocation());
             dinnerEvent.setDish(dinnerEventDTO.getDish());
             dinnerEvent.setPricePerPerson(dinnerEventDTO.getPricePerPerson());
@@ -113,8 +115,10 @@ public class DinnerEventFacade {
         } finally {
             em.close();
         }
-
     }
+
+    //Remove Assignment from DinnerEvent through id
+
 
     public static void main(String[] args) {
         DinnerEventFacade def = DinnerEventFacade.getDinnerEventFacade(EMF_Creator.createEntityManagerFactory());

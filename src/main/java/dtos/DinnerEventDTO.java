@@ -26,6 +26,7 @@ public class DinnerEventDTO {
 
     public DinnerEventDTO(Dinnerevent dinnerevent) {
         this.id = dinnerevent.getId();
+        this.eventName = dinnerevent.getEventName();
         this.time = dinnerevent.getTime();
         this.location = dinnerevent.getLocation();
         this.dish = dinnerevent.getDish();
