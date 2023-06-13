@@ -6,6 +6,8 @@ import entities.Role;
 import entities.User;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
+import javax.persistence.TypedQuery;
+
 import security.errorhandling.AuthenticationException;
 
 /**
@@ -60,18 +62,21 @@ public class UserFacade {
         return new UserDTO(user);
     }
 
-    public void addAssignmentToUser(Long userId, Long assignmentId) {
+    public void addAssignmentToUser(String username, Long assignmentId) {
         EntityManager em = emf.createEntityManager();
         try {
             em.getTransaction().begin();
+            TypedQuery<User> query = em.createQuery("SELECT u FROM User u WHERE u.user_name = :username", User.class);
+            query.setParameter("username", username);
+            User user = query.getSingleResult();
 
-            User user = em.find(User.class, userId);
             Assignment assignment = em.find(Assignment.class, assignmentId);
 
             if (user != null && assignment != null) {
                 user.getAssignmentList().add(assignment);
                 assignment.getUsers().add(user);
             }
+
             em.getTransaction().commit();
         } catch (Exception e) {
             throw new IllegalStateException("Failed to add assignment to user", e);

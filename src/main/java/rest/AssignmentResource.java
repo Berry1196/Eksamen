@@ -2,12 +2,12 @@ package rest;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import dtos.AssignmentDTO;
 import facades.AssignmentFacade;
 import utils.EMF_Creator;
 
 import javax.persistence.EntityManagerFactory;
-import javax.ws.rs.GET;
-import javax.ws.rs.Path;
+import javax.ws.rs.*;
 
 @Path("assignment")
 public class AssignmentResource {
@@ -19,6 +19,15 @@ public class AssignmentResource {
     @Path("all")
     public String getAllAssignments() {
         return GSON.toJson(FACADE.getAllAssignments());
+    }
+
+    @POST
+    @Produces("application/json")
+    @Consumes("application/json")
+    public String createAssignment(String assignment) {
+        AssignmentDTO assignmentDTO = GSON.fromJson(assignment, AssignmentDTO.class);
+        AssignmentDTO createdAssignment = FACADE.createAssignment(assignmentDTO);
+        return GSON.toJson(createdAssignment);
     }
 
 }
