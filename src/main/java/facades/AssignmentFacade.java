@@ -2,6 +2,7 @@ package facades;
 
 import dtos.AssignmentDTO;
 import entities.Assignment;
+import entities.Dinnerevent;
 import entities.User;
 import utils.EMF_Creator;
 
@@ -26,27 +27,49 @@ public class AssignmentFacade {
         return emf.createEntityManager();
     }
 
-    public AssignmentDTO createAssignment(AssignmentDTO assignmentDTO, List<String> userNames) {
-        EntityManager em = getEntityManager();
+    public AssignmentDTO createAssignment(AssignmentDTO assignmentDTO) {
         Assignment assignment = new Assignment(assignmentDTO.getFamilyName(), assignmentDTO.getCreateDate(), assignmentDTO.getContactInfo());
+
+        EntityManager em = getEntityManager();
         try {
             em.getTransaction().begin();
+            em.persist(assignment);
+            em.getTransaction().commit();
+        } catch (Exception e) {
+            em.getTransaction().rollback();
+            throw new RuntimeException("Failed to create assignment", e);
+        } finally {
+            em.close();
+        }
+
+        return new AssignmentDTO(assignment);
+    }
+
+    public void addUsersToAssignment(Long assignmentId, List<String> userNames) {
+        EntityManager em = getEntityManager();
+        try {
+            em.getTransaction().begin();
+
+            Assignment assignment = em.find(Assignment.class, assignmentId);
+            if (assignment == null) {
+                throw new IllegalArgumentException("Assignment not found with ID: " + assignmentId);
+            }
+
             for (String userName : userNames) {
-                // Fetch the user by user_name
                 User user = em.createQuery("SELECT u FROM User u WHERE u.user_name = :userName", User.class)
                         .setParameter("userName", userName)
                         .getSingleResult();
 
                 if (user != null) {
-                    // Add user to the assignment
                     assignment.getUsers().add(user);
-                    // If the relationship is bidirectional, you also need to add the assignment to the user's list of assignments
                     user.getAssignmentList().add(assignment);
                 }
             }
-            em.persist(assignment);
+
             em.getTransaction().commit();
-            return new AssignmentDTO(assignment);
+        } catch (Exception e) {
+            em.getTransaction().rollback();
+            throw new RuntimeException("Failed to add users to assignment", e);
         } finally {
             em.close();
         }
@@ -91,6 +114,29 @@ public class AssignmentFacade {
             em.close();
         }
     }
+
+    public AssignmentDTO assignDinnereventToAssignment(long assignmentId, long dinnereventId) {
+        EntityManager em = emf.createEntityManager();
+        Assignment assignment;
+        Dinnerevent dinnerevent;
+        try {
+            em.getTransaction().begin();
+            assignment = em.find(Assignment.class, assignmentId);
+            dinnerevent = em.find(Dinnerevent.class, dinnereventId);
+            if (assignment != null && dinnerevent != null) {
+                List<Assignment> assignments = dinnerevent.getAssignments();
+                assignments.add(assignment);
+                dinnerevent.setAssignments(assignments);
+                assignment.setDinnerevent(dinnerevent);
+            }
+            em.getTransaction().commit();
+        } finally {
+            em.close();
+        }
+        return new AssignmentDTO(assignment);
+    }
+
+
 
     public static void main(String[] args) {
         EntityManagerFactory emf = EMF_Creator.createEntityManagerFactory();
