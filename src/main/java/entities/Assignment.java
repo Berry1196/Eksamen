@@ -38,4 +38,9 @@ public class Assignment {
     private Set<User> users = new HashSet<>();
 
 
+    public Assignment(String familyName, String createDate, String contactInfo) {
+        this.familyName = familyName;
+        this.createDate = createDate;
+        this.contactInfo = contactInfo;
+    }
 }
