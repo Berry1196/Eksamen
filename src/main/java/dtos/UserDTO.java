@@ -21,7 +21,7 @@ public class UserDTO {
     private String phone;
     private String email;
     private String birthYear;
-    private String gender;
+    private String account;
     private List<String> roles = new ArrayList<>();
 
     // Constructors, getters, and setters
@@ -33,7 +33,7 @@ public class UserDTO {
         this.phone = user.getPhone();
         this.email = user.getEmail();
         this.birthYear = user.getBirthYear();
-        this.gender = user.getGender();
+        this.account = user.getAccount();
         for (Role role : user.getRoleList()) {
             this.roles.add(role.getRoleName());
         }

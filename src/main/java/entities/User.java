@@ -39,8 +39,8 @@ public class User implements Serializable {
     private String email;
     @Column(name = "birth_year")
     private String birthYear;
-    @Column (name = "gender")
-    private String gender;
+    @Column (name = "account")
+    private String account;
 
     @JoinTable(name = "user_roles", joinColumns = {
             @JoinColumn(name = "user_name", referencedColumnName = "user_name")}, inverseJoinColumns = {
@@ -49,13 +49,13 @@ public class User implements Serializable {
     @ManyToMany
     private List<Role> roleList = new ArrayList<>();
 
-   @JoinTable(name = "user_trips", joinColumns = {
+   @JoinTable(name = "user_assignments", joinColumns = {
             @JoinColumn(name = "user_name", referencedColumnName = "user_name")}, inverseJoinColumns = {
-            @JoinColumn(name = "trip_id", referencedColumnName = "id")})
+            @JoinColumn(name = "assignment_id", referencedColumnName = "id")})
     @ManyToMany
-    private List<Trip> tripList = new ArrayList<>();
+    private List<Assignment> assignment = new ArrayList<>();
 
-    public User( String user_name, String user_pass, String address, String phone, String email, String birthYear, String gender) {
+    public User( String user_name, String user_pass, String address, String phone, String email, String birthYear, String account) {
 
         this.user_name = user_name;
         this.userPass = BCrypt.hashpw(user_pass, BCrypt.gensalt());
@@ -63,7 +63,7 @@ public class User implements Serializable {
         this.phone = phone;
         this.email = email;
         this.birthYear = birthYear;
-        this.gender = gender;
+        this.account = account;
     }
 
     public List<String> getRolesAsStrings() {
