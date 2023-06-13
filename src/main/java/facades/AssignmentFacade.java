@@ -3,15 +3,23 @@ package facades;
 import dtos.AssignmentDTO;
 import entities.Assignment;
 import entities.User;
+import utils.EMF_Creator;
+
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
+import javax.persistence.TypedQuery;
 import java.util.List;
 
 public class AssignmentFacade {
-    private EntityManagerFactory emf;
+    private static EntityManagerFactory emf;
+    private static AssignmentFacade instance;
 
-    public AssignmentFacade(EntityManagerFactory emf) {
-        this.emf = emf;
+   public static AssignmentFacade getAssignmentFacade(EntityManagerFactory _emf) {
+        if (instance == null) {
+            emf = _emf;
+            instance = new AssignmentFacade();
+        }
+        return instance;
     }
 
     private EntityManager getEntityManager() {
@@ -29,6 +37,17 @@ public class AssignmentFacade {
         } finally {
             em.close();
         }
+    }
+    public List<AssignmentDTO> getAllAssignments() {
+        EntityManager em = getEntityManager();
+        List<Assignment> assignments;
+        try {
+            assignments = em.createQuery("SELECT a FROM Assignment a", Assignment.class).getResultList();
+
+        } finally {
+            em.close();
+        }
+        return AssignmentDTO.getDtos(assignments);
     }
 
     public void deleteAssignment(Long id) {
@@ -57,5 +76,13 @@ public class AssignmentFacade {
         } finally {
             em.close();
         }
+    }
+
+    public static void main(String[] args) {
+        EntityManagerFactory emf = EMF_Creator.createEntityManagerFactory();
+        AssignmentFacade assignmentFacade = getAssignmentFacade(emf);
+        //AssignmentDTO assignmentDTO = new AssignmentDTO("Test", "Test", "Test");
+        //assignmentFacade.createAssignment(assignmentDTO);
+        assignmentFacade.getAllAssignments().forEach(System.out::println);
     }
 }
