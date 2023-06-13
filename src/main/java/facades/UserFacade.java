@@ -10,6 +10,8 @@ import javax.persistence.TypedQuery;
 
 import security.errorhandling.AuthenticationException;
 
+import java.util.List;
+
 /**
  * @author lam@cphbusiness.dk
  */
@@ -83,6 +85,17 @@ public class UserFacade {
         } finally {
             em.close();
         }
+    }
+
+    public List<UserDTO> getAllUsers() {
+        EntityManager em = emf.createEntityManager();
+        List<User> users;
+        try {
+            users = em.createQuery("SELECT u FROM User u", User.class).getResultList();
+        } finally {
+            em.close();
+        }
+        return UserDTO.getDtos(users);
     }
 
 

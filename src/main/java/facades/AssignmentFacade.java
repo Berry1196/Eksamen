@@ -26,11 +26,24 @@ public class AssignmentFacade {
         return emf.createEntityManager();
     }
 
-    public AssignmentDTO createAssignment(AssignmentDTO assignmentDTO) {
+    public AssignmentDTO createAssignment(AssignmentDTO assignmentDTO, List<String> userNames) {
         EntityManager em = getEntityManager();
         Assignment assignment = new Assignment(assignmentDTO.getFamilyName(), assignmentDTO.getCreateDate(), assignmentDTO.getContactInfo());
         try {
             em.getTransaction().begin();
+            for (String userName : userNames) {
+                // Fetch the user by user_name
+                User user = em.createQuery("SELECT u FROM User u WHERE u.user_name = :userName", User.class)
+                        .setParameter("userName", userName)
+                        .getSingleResult();
+
+                if (user != null) {
+                    // Add user to the assignment
+                    assignment.getUsers().add(user);
+                    // If the relationship is bidirectional, you also need to add the assignment to the user's list of assignments
+                    user.getAssignmentList().add(assignment);
+                }
+            }
             em.persist(assignment);
             em.getTransaction().commit();
             return new AssignmentDTO(assignment);
@@ -38,6 +51,7 @@ public class AssignmentFacade {
             em.close();
         }
     }
+
     public List<AssignmentDTO> getAllAssignments() {
         EntityManager em = getEntityManager();
         List<Assignment> assignments;

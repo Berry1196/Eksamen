@@ -39,7 +39,9 @@ public class UserDTO {
         }
     }
 
-    // Getters and Setters
-
-    // Other methods (if any)
+    public static List<UserDTO> getDtos(List<User> users) {
+        List<UserDTO> userDTOS = new ArrayList<>();
+        users.forEach(user -> userDTOS.add(new UserDTO(user)));
+        return userDTOS;
+    }
 }

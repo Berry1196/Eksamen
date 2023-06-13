@@ -8,6 +8,8 @@ import utils.EMF_Creator;
 
 import javax.persistence.EntityManagerFactory;
 import javax.ws.rs.*;
+import javax.ws.rs.core.Response;
+import java.util.List;
 
 @Path("assignment")
 public class AssignmentResource {
@@ -24,10 +26,17 @@ public class AssignmentResource {
     @POST
     @Produces("application/json")
     @Consumes("application/json")
-    public String createAssignment(String assignment) {
-        AssignmentDTO assignmentDTO = GSON.fromJson(assignment, AssignmentDTO.class);
-        AssignmentDTO createdAssignment = FACADE.createAssignment(assignmentDTO);
-        return GSON.toJson(createdAssignment);
+    public Response createAssignment(AssignmentDTO assignmentDTO, @QueryParam("user_name") List<String> userNames) {
+        try {
+            AssignmentDTO newAssignment = FACADE.createAssignment(assignmentDTO, userNames);
+            return Response.ok(newAssignment).build();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return Response.status(Response.Status.BAD_REQUEST).entity(e.getMessage()).build();
+        }
     }
+
+
+
 
 }
