@@ -15,6 +15,9 @@ public class AssignmentFacade {
     private static EntityManagerFactory emf;
     private static AssignmentFacade instance;
 
+    private AssignmentFacade() {
+    }
+
    public static AssignmentFacade getAssignmentFacade(EntityManagerFactory _emf) {
         if (instance == null) {
             emf = _emf;

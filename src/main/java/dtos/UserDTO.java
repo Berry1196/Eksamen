@@ -39,6 +39,16 @@ public class UserDTO {
         }
     }
 
+    public UserDTO(String user_name, String user_pass, String address, String phone, String email, String birthYear, int account) {
+        this.user_name = user_name;
+        this.user_pass = user_pass;
+        this.address = address;
+        this.phone = phone;
+        this.email = email;
+        this.birthYear = birthYear;
+        this.account = account;
+    }
+
     public static List<UserDTO> getDtos(List<User> users) {
         List<UserDTO> userDTOS = new ArrayList<>();
         users.forEach(user -> userDTOS.add(new UserDTO(user)));
