@@ -25,7 +25,9 @@ public class AssignmentFacadeTest {
     }
 
     @AfterAll
-    public static void tearDownClass() {}
+    public static void tearDownClass() {
+        emf.close();
+    }
 
     @BeforeEach
     public void setUp() {

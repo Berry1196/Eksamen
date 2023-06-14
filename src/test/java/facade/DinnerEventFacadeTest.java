@@ -32,7 +32,7 @@ public class DinnerEventFacadeTest {
 
     @AfterAll
     public static void tearDownClass() {
-        //Since we are using a drop-and-create we dont have to do anything here
+        emf.close();
     }
 
     @BeforeEach
